@@ -3,7 +3,7 @@ import librosa.display
 import IPython.display as ipd
 import numpy as np
 
-filename = "D://Uni//6th Sem//SP//SP_shreya_audioFile.wav"
+filename = "SP_shreya_audioFile.wav"
 
 y, sr = librosa.load(filename)
 #whole audio
