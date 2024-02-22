@@ -9,11 +9,9 @@ y, sr = librosa.load(filename)
 
 #A1
 a = np.fft.fft(y)
- 
-freq = np.fft.fftfreq(len(a), d=1/sr)
-
+freq_sig = np.fft.fftfreq(len(a), d=1/sr)
 plt.figure(figsize=(10, 5))
-plt.plot(freq, np.abs(a))
+plt.plot(freq_sig, np.abs(a))
 plt.title('Amplitude Spectrum')
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('Amplitude')
@@ -41,11 +39,11 @@ plt.show()
 #They're the same, so successful reconstruction done.
 
 #A3 Segmented the word "AI"
-start_time = 0
-end_time = 1
-start_index = int(start_time * sr)
-end_index = int(end_time * sr)
-word_segment = y[start_index:end_index]
+stime = 0
+etime = 1
+sindex = int(stime * sr)
+eindex = int(etime * sr)
+word_segment = y[sindex:eindex]
 ipd.Audio(word_segment, rate=sr)
 
 word_spectrum = np.fft.fft(word_segment)
@@ -74,10 +72,10 @@ plt.tight_layout()
 plt.show()
 
 #A4
-window_length_ms = 20  
+window_length = 20  
 sr2 = 22500
-window_length_samples = int(window_length_ms * sr2 / 1000)
-speech_window = y[:window_length_samples]
+samples = int(window_length * sr2 / 1000)
+speech_window = y[:samples]
 
 fft_result = np.fft.fft(speech_window)
 fft_magnitude = np.abs(fft_result)
@@ -92,8 +90,8 @@ plt.grid(True)
 plt.show()
 
 #A5
-window_length_ms = 20  
-window_length_samples = int(window_length_ms * sr / 1000)
+window_length = 20  
+window_length_samples = int(window_length * sr / 1000)
 hop_length = int(window_length_samples / 2)
 D = librosa.stft(y, n_fft=window_length_samples, hop_length=hop_length)
 spectrogram = np.abs(D)
