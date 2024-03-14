@@ -1,3 +1,4 @@
+#importing required libraries
 import librosa
 import librosa.display
 import IPython.display as ipd
@@ -5,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile as wav
 
-
+#functions to reuse
 def plotting(freq,spectrum,sampling_rate):
     plt.figure(figsize=(10, 5))
     plt.plot(freq, np.abs(spectrum))
@@ -16,8 +17,22 @@ def plotting(freq,spectrum,sampling_rate):
     plt.grid(True)
     plt.show()
 
+def spectrogram_calculate_and_plot(audioSignal, sampling_rate):
+    window_length_ms = 20
+    window_length_samples = int(window_length_ms * sampling_rate / 1000)
+    hop_length = int(window_length_samples / 2)
+    D = librosa.stft(audioSignal, n_fft=window_length_samples, hop_length=hop_length)
+    spectrogram = np.abs(D)
+    #plot
+    plt.figure(figsize=(10, 6))
+    librosa.display.specshow(librosa.amplitude_to_db(spectrogram, ref=np.max), sr=sampling_rate, hop_length=hop_length, x_axis='time', y_axis='linear')
+    plt.title('Spectrogram of Speech Signal')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Frequency (Hz)')
+    plt.show()
 
 
+#calling the file
 filename = "SP_shreya_audioFile.wav"
 audioSignal, sampling_rate = librosa.load(filename)
 
@@ -56,15 +71,4 @@ plotting(freqComponents,spectrumSegment3,sampling_rate)
 
 
 #spectrogram generation
-window_length_ms = 20
-window_length_samples = int(window_length_ms * sampling_rate / 1000)
-hop_length = int(window_length_samples / 2)
-D = librosa.stft(audioSignal, n_fft=window_length_samples, hop_length=hop_length)
-spectrogram = np.abs(D)
-
-plt.figure(figsize=(10, 6))
-librosa.display.specshow(librosa.amplitude_to_db(spectrogram, ref=np.max), sr=sampling_rate, hop_length=hop_length, x_axis='time', y_axis='linear')
-plt.title('Spectrogram of Speech Signal')
-plt.xlabel('Time (s)')
-plt.ylabel('Frequency (Hz)')
-plt.show()
+spectrogram_calculate_and_plot(audioSignal, sampling_rate)
